@@ -114,10 +114,6 @@ public class AirlineStore {
                             airlineJSON.getString("site")
                     );
                     airlines.add(airline);
-
-                    if (i == 0)
-                        Log.v(MainActivity.TAG, airline.toString());
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

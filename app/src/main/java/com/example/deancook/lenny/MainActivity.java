@@ -2,16 +2,22 @@ package com.example.deancook.lenny;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
+import com.example.deancook.lenny.pages.DetailFragment;
 import com.example.deancook.lenny.pages.MasterFragment;
+import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 
-public class MainActivity extends FragmentActivity implements MasterFragment.Container {
+public class MainActivity extends FragmentActivity implements
+        MasterFragment.Container,
+        DetailFragment.Container {
 
     public static final String TAG = MainActivity.class.getName();
 
     private AirlineStore airlines;
+    private Airline currentAirline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +45,22 @@ public class MainActivity extends FragmentActivity implements MasterFragment.Con
     @Override
     public AirlineStore getAirlineStore() {
         return airlines;
+    }
+
+    @Override
+    public void onAirlineSelection(Airline airline) {
+        Log.v(this.TAG, airline.toString());
+        this.currentAirline = airline;
+
+        this.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container__main, DetailFragment.newInstance(), DetailFragment.TAG)
+                .addToBackStack(MasterFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public Airline getAirline() {
+        return this.currentAirline;
     }
 }

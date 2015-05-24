@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.deancook.lenny.AirlineRecyclerAdapter;
 import com.example.deancook.lenny.R;
+import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 /**
@@ -53,7 +54,7 @@ public class MasterFragment extends Fragment {
         LinearLayoutManager recyclerLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(recyclerLayoutManager);
 
-        AirlineRecyclerAdapter recyclerAdapter = new AirlineRecyclerAdapter();
+        AirlineRecyclerAdapter recyclerAdapter = new AirlineRecyclerAdapter(this.container);
         airlines.registerObserver(recyclerAdapter);
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -79,5 +80,7 @@ public class MasterFragment extends Fragment {
      */
     public interface Container {
         AirlineStore getAirlineStore();
+
+        void onAirlineSelection(Airline airline);
     }
 }

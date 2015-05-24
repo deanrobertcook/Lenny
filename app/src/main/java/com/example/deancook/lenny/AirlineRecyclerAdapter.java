@@ -1,11 +1,14 @@
 package com.example.deancook.lenny;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.deancook.lenny.pages.MasterFragment;
 import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
@@ -20,18 +23,33 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
         implements AirlineStore.Observer {
 
     private List<Airline> airlines;
+    private MasterFragment.Container container;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView airlineName;
-        public ViewHolder(View airlineName) {
-            super(airlineName);
-            this.airlineName = (TextView) airlineName.findViewById(R.id.name);
+        public int airlineId;
+
+        public ViewHolder(final View airlineView) {
+            super(airlineView);
+            this.airlineName = (TextView) airlineView.findViewById(R.id.name);
+            airlineView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Airline airline = airlines.get(airlineId);
+                    container.onAirlineSelection(airline);
+                }
+            });
+        }
+
+        public void setId(int id) {
+            this.airlineId = id;
         }
     }
 
-    public AirlineRecyclerAdapter() {
+    public AirlineRecyclerAdapter(MasterFragment.Container container) {
         this.airlines = new ArrayList<>();
+        this.container = container;
     }
 
     @Override
@@ -54,6 +72,7 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.airlineName.setText(airlines.get(position).name);
+        holder.setId(position);
     }
 
     @Override
