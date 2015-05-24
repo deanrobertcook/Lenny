@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.deancook.lenny.MainActivity;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -29,17 +31,17 @@ import java.util.Set;
  */
 public class AirlineStore {
 
-    private List<Airline> airlines;
+    private List<Airline> airlines = new ArrayList<>();
     private Set<Observer> observers = new HashSet<>();
 
     private static String url = "https://www.kayak.com/h/mobileapis/directory/airlines";
 
-    public AirlineStore() {
-
-    }
-
     public void registerObserver(Observer observer) {
         this.observers.add(observer);
+
+        //pass in the current list to a newly registered observer in case
+        //the list is already full
+        observer.onAirlineListHasChanged(this.airlines);
     }
 
     public void unregisterObserver(Observer observer) {
@@ -47,8 +49,9 @@ public class AirlineStore {
     }
 
     public void notifyObservers() {
+
         for (Observer observer: observers) {
-            observer.notify();
+            observer.onAirlineListHasChanged(this.airlines);
         }
     }
 
@@ -92,7 +95,8 @@ public class AirlineStore {
         @Override
         protected void onPostExecute(List<Airline> result) {
             super.onPostExecute(result);
-
+            airlines = result;
+            notifyObservers();
         }
 
         private List<Airline> getAirlinesFromJSON(String json) {
@@ -111,6 +115,9 @@ public class AirlineStore {
                     );
                     airlines.add(airline);
 
+                    if (i == 0)
+                        Log.v(MainActivity.TAG, airline.toString());
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -119,6 +126,11 @@ public class AirlineStore {
         }
     }
 
+    /*
+    The Observer Pattern - any object wishing to listen to this Store must implement
+    this interface so that it can add itself to the list of observers. If the list changes,
+    then each observer is notified and passed the new list of airlines
+     */
     public interface Observer {
         void onAirlineListHasChanged(List<Airline> airlines);
     }

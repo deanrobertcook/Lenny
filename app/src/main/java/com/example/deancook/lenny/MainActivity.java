@@ -7,9 +7,9 @@ import com.example.deancook.lenny.pages.MasterFragment;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements MasterFragment.Container {
 
-    private static final String TAG = MainActivity.class.getName();
+    public static final String TAG = MainActivity.class.getName();
 
     private AirlineStore airlines;
 
@@ -18,11 +18,26 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         airlines = new AirlineStore();
+        airlines.fetchArlines();
 
+        /*
+        The (Support)FragmentManager handles all of the fragments attached to the activity
+        We are starting a "transaction" with the fragment we want to add to the activity. We
+        must then specify the container (activity inner layout) that we want to attach it to.
+        We then get the activity and supply a tag that we can use to fetch the fragment later
+        when it gets moved to the back stack etc.
+         */
         this.getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container__main, MasterFragment.newInstance(), MasterFragment.TAG)
                 .commit();
     }
 
+    /*
+    The activity is now conforming to the interface expected by the fragment
+     */
+    @Override
+    public AirlineStore getAirlineStore() {
+        return airlines;
+    }
 }
