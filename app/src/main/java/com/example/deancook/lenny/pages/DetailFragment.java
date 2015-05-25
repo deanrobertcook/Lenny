@@ -28,19 +28,24 @@ public class DetailFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.container = (Container) activity;
-        this.airline = this.container.getAirline();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, parent, false);
+        View view;
 
-        ((TextView) view.findViewById(R.id.code)).setText(this.airline.code);
-        ((TextView) view.findViewById(R.id.name)).setText(this.airline.name);
-        ((TextView) view.findViewById(R.id.phone)).setText(this.airline.phone);
-        ((TextView) view.findViewById(R.id.site)).setText(this.airline.site);
+        this.airline = this.container.getAirline();
 
+        if (this.airline == null) {
+            view = inflater.inflate(R.layout.fragment_detail_empty, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_detail, parent, false);
+            ((TextView) view.findViewById(R.id.code)).setText(this.airline.code);
+            ((TextView) view.findViewById(R.id.name)).setText(this.airline.name);
+            ((TextView) view.findViewById(R.id.phone)).setText(this.airline.phone);
+            ((TextView) view.findViewById(R.id.site)).setText(this.airline.site);
+        }
 
         return view;
     }

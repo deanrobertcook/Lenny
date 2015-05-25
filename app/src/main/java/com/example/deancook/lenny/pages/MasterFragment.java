@@ -30,11 +30,15 @@ public class MasterFragment extends Fragment {
         return new MasterFragment();
     }
 
+    /*
+    The onAttach method seems to be called during the super call to onCreate of the parent Activity?
+    The greyed out line is called before the storeFragment can be called out of the back stack????
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         container = (Container) activity;
-        airlines = container.getAirlineStore();
+        //airlines = container.getAirlineStore();
     }
 
     /*
@@ -55,6 +59,7 @@ public class MasterFragment extends Fragment {
         recyclerView.setLayoutManager(recyclerLayoutManager);
 
         AirlineRecyclerAdapter recyclerAdapter = new AirlineRecyclerAdapter(this.container);
+        airlines = container.getAirlineStore();
         airlines.registerObserver(recyclerAdapter);
         recyclerView.setAdapter(recyclerAdapter);
 

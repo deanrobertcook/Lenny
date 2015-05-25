@@ -1,5 +1,6 @@
 package com.example.deancook.lenny;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,27 +17,38 @@ public class MainActivity extends FragmentActivity implements
 
     public static final String TAG = MainActivity.class.getName();
 
-    private AirlineStore airlines;
-    private Airline currentAirline;
+    private StoreFragment storeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        airlines = new AirlineStore();
-        airlines.fetchArlines();
 
-        /*
-        The (Support)FragmentManager handles all of the fragments attached to the activity
-        We are starting a "transaction" with the fragment we want to add to the activity. We
-        must then specify the container (activity inner layout) that we want to attach it to.
-        We then get the activity and supply a tag that we can use to fetch the fragment later
-        when it gets moved to the back stack etc.
-         */
-        this.getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.container__main, MasterFragment.newInstance(), MasterFragment.TAG)
-                .commit();
+        storeFragment = (StoreFragment) this.getSupportFragmentManager()
+                .findFragmentByTag(StoreFragment.TAG);
+
+        if (storeFragment == null) {
+            storeFragment = StoreFragment.newInstance();
+            this.getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(storeFragment, StoreFragment.TAG)
+                    .commit();
+        }
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.activity_main);
+            this.getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container__master, MasterFragment.newInstance(), MasterFragment.TAG)
+                    .commit();
+
+        } else {
+            setContentView(R.layout.activity_main_landscape);
+            this.getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container__master, MasterFragment.newInstance(), MasterFragment.TAG)
+                    .add(R.id.container__detail, DetailFragment.newInstance(), DetailFragment.TAG)
+                    .commit();
+        }
     }
 
     /*
@@ -44,23 +56,32 @@ public class MainActivity extends FragmentActivity implements
      */
     @Override
     public AirlineStore getAirlineStore() {
-        return airlines;
+        return storeFragment.getAirlineStore();
     }
 
     @Override
     public void onAirlineSelection(Airline airline) {
         Log.v(this.TAG, airline.toString());
-        this.currentAirline = airline;
+        this.storeFragment.setCurrentAirline(airline);
+
+        int containerToReplace;
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            containerToReplace = R.id.container__master;
+        } else {
+            containerToReplace = R.id.container__detail;
+        }
 
         this.getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container__main, DetailFragment.newInstance(), DetailFragment.TAG)
+                .replace(containerToReplace, DetailFragment.newInstance(), DetailFragment.TAG)
                 .addToBackStack(MasterFragment.TAG)
                 .commit();
+
     }
 
     @Override
     public Airline getAirline() {
-        return this.currentAirline;
+        return this.storeFragment.getCurrentAirline();
     }
 }
