@@ -69,6 +69,11 @@ public class AirlineStore {
         new RequestTask().execute(url);
     }
 
+    public void setAirline(Airline selectedAirline) {
+        this.selectedAirline = selectedAirline;
+        this.notifyItemObservers();
+    }
+
     public void tearDown() {
         this.airlines = null;
         this.selectedAirline = null;

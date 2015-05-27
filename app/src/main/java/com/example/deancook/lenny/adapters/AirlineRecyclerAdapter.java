@@ -36,12 +36,12 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
 
         public ViewHolder(final View airlineView) {
             super(airlineView);
-            this.airlineName = (TextView) airlineView.findViewById(R.id.name);
+            this.airlineName = (TextView) airlineView.findViewById(R.id.tv__fragment__name);
             airlineView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Airline airline = airlines.get(airlineId);
-                    callback.onItemSelected(airline);
+                    callback.onAirlineSelected(airline);
                 }
             });
         }
@@ -91,6 +91,6 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
     to pierce all the way down, through our Fragment and into our Adapter
      */
     public interface Callback {
-        public void onItemSelected(Airline airlineSelected);
+        public void onAirlineSelected(Airline airlineSelected);
     }
 }

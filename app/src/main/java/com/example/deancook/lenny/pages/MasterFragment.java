@@ -49,6 +49,7 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
 
         recyclerView.setLayoutManager(recyclerLayoutManager);
 
+        //the adapter we will need to refer to throughout the lifecycle!
         adapter = new AirlineRecyclerAdapter(this.container);
         recyclerView.setAdapter(adapter);
 
@@ -64,6 +65,8 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
     @Override
     public void onStart() {
         super.onStart();
+        //We shouldn't set another variable to hold the airlines store here (like this.arlines or anything
+        //like that). Instead, we just get the list straight from the store
         this.container.getAirlineStore().registerListObserver(this.adapter);
     }
 
@@ -104,7 +107,7 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
     }
 
     @Override
-    public void onItemSelected(Airline airlineSelected) {
+    public void onAirlineSelected(Airline airlineSelected) {
         this.container.onAirlineSelection(airlineSelected);
     }
 

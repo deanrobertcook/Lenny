@@ -11,20 +11,18 @@ import com.example.deancook.lenny.stores.AirlineStore;
 
 
 public class MainActivity extends FragmentActivity implements
-        MasterFragment.Container,
-        DetailFragment.Container {
+        MasterFragment.Container {
 
     public static final String TAG = MainActivity.class.getName();
 
-    private AirlineStore airlines;
-    private Airline currentAirline;
+    private AirlineStore airlineStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        airlines = new AirlineStore();
-        airlines.fetchArlines();
+        airlineStore = new AirlineStore();
+        airlineStore.fetchArlines();
 
         /*
         The (Support)FragmentManager handles all of the fragments attached to the activity
@@ -44,23 +42,19 @@ public class MainActivity extends FragmentActivity implements
      */
     @Override
     public AirlineStore getAirlineStore() {
-        return airlines;
+        return airlineStore;
     }
 
     @Override
     public void onAirlineSelection(Airline airline) {
         Log.v(this.TAG, airline.toString());
-        this.currentAirline = airline;
+        this.airlineStore.setAirline(airline);
 
         this.getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container__main, DetailFragment.newInstance(), DetailFragment.TAG)
                 .addToBackStack(MasterFragment.TAG)
                 .commit();
-    }
 
-    @Override
-    public Airline getAirline() {
-        return this.currentAirline;
     }
 }
