@@ -1,10 +1,6 @@
 package com.example.deancook.lenny.stores;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.deancook.lenny.MainActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -22,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
 /**
@@ -32,26 +26,42 @@ import java.util.Set;
 public class AirlineStore {
 
     private List<Airline> airlines = new ArrayList<>();
-    private Set<Observer> observers = new HashSet<>();
+    private Airline selectedAirline;
+    private Set<ListObserver> listObservers = new HashSet<>();
+    private Set<ItemObserver> itemObservers = new HashSet<>();
 
     private static String url = "https://www.kayak.com/h/mobileapis/directory/airlines";
 
-    public void registerObserver(Observer observer) {
-        this.observers.add(observer);
+    public void registerListObserver(ListObserver listObserver) {
+        this.listObservers.add(listObserver);
 
         //pass in the current list to a newly registered observer in case
         //the list is already full
-        observer.onAirlineListHasChanged(this.airlines);
+        listObserver.onAirlineListHasChanged(this.airlines);
     }
 
-    public void unregisterObserver(Observer observer) {
-        this.observers.remove(observer);
+    public void unregisterListObserver(ListObserver listObserver) {
+        this.listObservers.remove(listObserver);
     }
 
-    public void notifyObservers() {
+    public void registerItemObserver(ItemObserver itemObserver) {
+        this.itemObservers.add(itemObserver);
+        itemObserver.onAirlineHasChanged(this.selectedAirline);
+    }
 
-        for (Observer observer: observers) {
-            observer.onAirlineListHasChanged(this.airlines);
+    public void unregisterItemObserver(ItemObserver itemObserver) {
+        this.itemObservers.remove(itemObserver);
+    }
+
+    public void notifyListObservers() {
+        for (ListObserver listObserver : listObservers) {
+            listObserver.onAirlineListHasChanged(this.airlines);
+        }
+    }
+
+    public void notifyItemObservers() {
+        for (ItemObserver itemObserver: itemObservers) {
+            itemObserver.onAirlineHasChanged(this.selectedAirline);
         }
     }
 
@@ -60,7 +70,10 @@ public class AirlineStore {
     }
 
     public void tearDown() {
-
+        this.airlines = null;
+        this.selectedAirline = null;
+        this.listObservers = null;
+        this.itemObservers = null;
     }
 
     class RequestTask extends AsyncTask<String, Void, List<Airline>> {
@@ -96,7 +109,8 @@ public class AirlineStore {
         protected void onPostExecute(List<Airline> result) {
             super.onPostExecute(result);
             airlines = result;
-            notifyObservers();
+            selectedAirline = airlines.get(0);
+            notifyListObservers();
         }
 
         private List<Airline> getAirlinesFromJSON(String json) {
@@ -127,7 +141,11 @@ public class AirlineStore {
     this interface so that it can add itself to the list of observers. If the list changes,
     then each observer is notified and passed the new list of airlines
      */
-    public interface Observer {
+    public interface ListObserver {
         void onAirlineListHasChanged(List<Airline> airlines);
+    }
+
+    public interface ItemObserver {
+        void onAirlineHasChanged(Airline airline);
     }
 }

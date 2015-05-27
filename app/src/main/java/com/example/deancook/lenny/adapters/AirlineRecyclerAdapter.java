@@ -19,7 +19,7 @@ import java.util.List;
  * Created by deancook on 23/05/15.
  */
 public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecyclerAdapter.ViewHolder>
-        implements AirlineStore.Observer {
+        implements AirlineStore.ListObserver {
 
     private List<Airline> airlines;
     private MasterFragment.Container container;

@@ -64,12 +64,12 @@ public class MasterFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        this.container.getAirlineStore().registerObserver(this.adapter);
+        this.container.getAirlineStore().registerListObserver(this.adapter);
     }
 
     @Override
     public void onStop() {
-        this.container.getAirlineStore().unregisterObserver(this.adapter);
+        this.container.getAirlineStore().unregisterListObserver(this.adapter);
         super.onStop();
     }
 
