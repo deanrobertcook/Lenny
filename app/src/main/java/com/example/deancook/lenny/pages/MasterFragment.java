@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.deancook.lenny.AirlineRecyclerAdapter;
+import com.example.deancook.lenny.adapters.AirlineRecyclerAdapter;
 import com.example.deancook.lenny.R;
 import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
@@ -23,8 +23,7 @@ public class MasterFragment extends Fragment {
     public static final String TAG = MasterFragment.class.getName();
 
     private Container container;
-    private AirlineStore airlines;
-    private RecyclerView recyclerView;
+    private AirlineRecyclerAdapter adapter;
 
     public static MasterFragment newInstance() {
         return new MasterFragment();
@@ -34,7 +33,6 @@ public class MasterFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         container = (Container) activity;
-        airlines = container.getAirlineStore();
     }
 
     /*
@@ -44,25 +42,40 @@ public class MasterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_master, parent, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        //Should be no need to worry about the layout manager or the view, so we don't make them global
+        LinearLayoutManager recyclerLayoutManager = new LinearLayoutManager(getActivity());
+
+        recyclerView.setLayoutManager(recyclerLayoutManager);
+
+        adapter = new AirlineRecyclerAdapter(this.container);
+        recyclerView.setAdapter(adapter);
+
         return rootView;
     }
 
+    /*
+    Good practice to worry about the fragments data in the onStart/onStop methods
+    The adapter should be registered here, and unregistered again in the onStop() method.
+    In order to have full control and awareness over the lifecyle and what's happening, it's
+    a good idea to implement the methods and their inverse
+     */
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onStart() {
+        super.onStart();
+        this.container.getAirlineStore().registerObserver(this.adapter);
+    }
 
-        LinearLayoutManager recyclerLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(recyclerLayoutManager);
-
-        AirlineRecyclerAdapter recyclerAdapter = new AirlineRecyclerAdapter(this.container);
-        airlines.registerObserver(recyclerAdapter);
-        recyclerView.setAdapter(recyclerAdapter);
-
-        super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onStop() {
+        this.container.getAirlineStore().unregisterObserver(this.adapter);
+        super.onStop();
     }
 
     @Override
     public void onDestroyView() {
+        this.adapter = null;
         super.onDestroyView();
     }
 
