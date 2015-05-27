@@ -23,6 +23,11 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
 
     private List<Airline> airlines;
     private MasterFragment.Container container;
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,7 +41,7 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
                 @Override
                 public void onClick(View view) {
                     Airline airline = airlines.get(airlineId);
-                    container.onAirlineSelection(airline);
+                    callback.onItemSelected(airline);
                 }
             });
         }
@@ -77,5 +82,15 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
     @Override
     public int getItemCount() {
         return airlines.size();
+    }
+
+    /*
+    This callback pattern is similar to the observer pattern except it only allows one
+    observer at a time (whichever class implementing Callback which has called setCallback)
+    In this case, it would be our Fragment, and that way, the Container (Activity) doesn't need
+    to pierce all the way down, through our Fragment and into our Adapter
+     */
+    public interface Callback {
+        public void onItemSelected(Airline airlineSelected);
     }
 }

@@ -18,7 +18,7 @@ import com.example.deancook.lenny.stores.AirlineStore;
 /**
  * Created by deancook on 21/05/15.
  */
-public class MasterFragment extends Fragment {
+public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.Callback {
 
     public static final String TAG = MasterFragment.class.getName();
 
@@ -67,6 +67,23 @@ public class MasterFragment extends Fragment {
         this.container.getAirlineStore().registerListObserver(this.adapter);
     }
 
+    /*
+    Here's a good place to tell the adapter that we're listening to it when the user interacts with
+    it's data. We pass the Fragment down as a Callback, and the Callback interface specifies what
+    methods we need to implement in order to handle events on ViewHolder View items.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.adapter.setCallback(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.adapter.setCallback(null);
+    }
+
     @Override
     public void onStop() {
         this.container.getAirlineStore().unregisterListObserver(this.adapter);
@@ -84,6 +101,11 @@ public class MasterFragment extends Fragment {
         //prevents memory leaking ??
         container = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onItemSelected(Airline airlineSelected) {
+        this.container.onAirlineSelection(airlineSelected);
     }
 
     /*
