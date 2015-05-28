@@ -22,7 +22,6 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     public static final String TAG = DetailFragment.class.getName();
     private Airline airline;
     private MasterFragment.Container container;
-    private ViewHolder viewHolder;
 
     public static DetailFragment newInstance() {
         return new DetailFragment();
@@ -38,14 +37,6 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, parent, false);
-
-        viewHolder = new ViewHolder(
-                (TextView) view.findViewById(R.id.tv__fragment__code),
-                (TextView) view.findViewById(R.id.tv__fragment__name),
-                (TextView) view.findViewById(R.id.tv__fragment__phone),
-                (TextView) view.findViewById(R.id.tv__fragment__site)
-        );
-
         return view;
     }
 
@@ -58,10 +49,12 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     @Override
     public void onResume() {
         super.onResume();
-        (viewHolder.codeField).setText(this.airline.code);
-        (viewHolder.nameField).setText(this.airline.name);
-        (viewHolder.phoneField).setText(this.airline.phone);
-        (viewHolder.siteField).setText(this.airline.site);
+
+        View view = getView();
+        ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(this.airline.code);
+        ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(this.airline.name);
+        ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(this.airline.phone);
+        ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(this.airline.site);
     }
 
     @Override
