@@ -49,7 +49,8 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
         recyclerView.setLayoutManager(recyclerLayoutManager);
 
         //the adapter we will need to refer to throughout the lifecycle!
-        adapter = new AirlineRecyclerAdapter(this.container);
+        adapter = new AirlineRecyclerAdapter();
+        adapter.setCallback(this);
         recyclerView.setAdapter(adapter);
 
         return rootView;

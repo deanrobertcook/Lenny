@@ -17,42 +17,14 @@ import java.util.List;
 /**
  * Created by deancook on 23/05/15.
  */
-public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecyclerAdapter.ViewHolder>
+public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineViewHolder>
         implements AirlineStore.ListObserver {
 
-    private List<Airline> airlines;
-    private MasterFragment.Container container;
+    private List<Airline> airlines = new ArrayList<>();
     private Callback callback;
 
     public void setCallback(Callback callback) {
         this.callback = callback;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView airlineName;
-        public int airlineId;
-
-        public ViewHolder(final View airlineView) {
-            super(airlineView);
-            this.airlineName = (TextView) airlineView.findViewById(R.id.tv__fragment__name);
-            airlineView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Airline airline = airlines.get(airlineId);
-                    callback.onAirlineSelected(airline);
-                }
-            });
-        }
-
-        public void setId(int id) {
-            this.airlineId = id;
-        }
-    }
-
-    public AirlineRecyclerAdapter(MasterFragment.Container container) {
-        this.airlines = new ArrayList<>();
-        this.container = container;
     }
 
     @Override
@@ -65,17 +37,27 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineRecycler
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AirlineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.airline_name, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        AirlineViewHolder holder = new AirlineViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(AirlineViewHolder holder, int position) {
         holder.airlineName.setText(airlines.get(position).name);
         holder.setId(position);
+        /*
+         * So why do we create an anonymous callback class here instead of implementing the the
+         * onAirlineSelected() method here in the class itself?
+         */
+        holder.setCallback(new AirlineViewHolder.Callback() {
+            @Override
+            public void onAirlineSelected(int airlinePosition) {
+                callback.onAirlineSelected(airlines.get(airlinePosition));
+            }
+        });
     }
 
     @Override
