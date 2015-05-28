@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.deancook.lenny.R;
 import com.example.deancook.lenny.pages.master.MasterFragment;
-import com.example.deancook.lenny.stores.Airline;
+import com.example.deancook.lenny.models.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 /**
@@ -61,7 +61,7 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     public void onResume() {
         super.onResume();
 
-        //TODO if the airline isn't ready, how do we get it?
+        //TODO if the airline isn't ready, how do we get it? Where do we check again
         if (airline != null) {
             View view = getView();
             ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(this.airline.code);

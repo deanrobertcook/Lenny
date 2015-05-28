@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.example.deancook.lenny.pages.detail.DetailFragment;
 import com.example.deancook.lenny.pages.master.MasterFragment;
-import com.example.deancook.lenny.stores.Airline;
+import com.example.deancook.lenny.models.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 
@@ -52,7 +52,8 @@ public class MainActivity extends FragmentActivity implements
 
         this.getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container__main, DetailFragment.newInstance(), DetailFragment.TAG)
+                //TODO figure out how to do this properly
+                .replace(R.id.container__main, DetailFragment.newInstance("Test"), DetailFragment.TAG)
                 .addToBackStack(MasterFragment.TAG)
                 .commit();
 

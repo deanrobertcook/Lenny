@@ -1,4 +1,4 @@
-package com.example.deancook.lenny.stores;
+package com.example.deancook.lenny.models;
 
 /**
  * Created by deancook on 20/05/15.

@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.deancook.lenny.R;
-import com.example.deancook.lenny.stores.Airline;
 
 /**
  * Created by deancook on 28/05/15.

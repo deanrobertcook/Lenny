@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.deancook.lenny.R;
-import com.example.deancook.lenny.stores.Airline;
+import com.example.deancook.lenny.models.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
 /**
