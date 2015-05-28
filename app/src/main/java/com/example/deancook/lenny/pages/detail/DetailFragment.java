@@ -20,11 +20,20 @@ import com.example.deancook.lenny.stores.AirlineStore;
 public class DetailFragment extends Fragment implements AirlineStore.ItemObserver {
 
     public static final String TAG = DetailFragment.class.getName();
-    private Airline airline;
+    private static final String ARG_AIRLINE_TAG = "ARG_AIRLINE_TAG";
+    private static Airline airline;
+
     private MasterFragment.Container container;
 
-    public static DetailFragment newInstance() {
-        return new DetailFragment();
+    public static DetailFragment newInstance(String airlineId) {
+        DetailFragment fragment = new DetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_AIRLINE_TAG, airlineId);
+
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @Override
@@ -44,17 +53,22 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     public void onStart() {
         super.onStart();
         container.getAirlineStore().registerItemObserver(this);
+        //TODO We had this, but where does the airline actually get saved?
+        //container.getAirlineStore().fetchAirline(this.getArguments().getString(this.ARG_AIRLINE_TAG));
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        View view = getView();
-        ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(this.airline.code);
-        ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(this.airline.name);
-        ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(this.airline.phone);
-        ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(this.airline.site);
+        //TODO if the airline isn't ready, how do we get it?
+        if (airline != null) {
+            View view = getView();
+            ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(this.airline.code);
+            ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(this.airline.name);
+            ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(this.airline.phone);
+            ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(this.airline.site);
+        }
     }
 
     @Override
@@ -65,7 +79,6 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
 
     @Override
     public void onDestroyView() {
-        this.viewHolder = null;
         super.onDestroyView();
     }
 
@@ -78,24 +91,5 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     @Override
     public void onAirlineHasChanged(Airline airline) {
         this.airline = airline;
-    }
-
-    private class ViewHolder {
-        public TextView codeField;
-        public TextView nameField;
-        public TextView phoneField;
-        public TextView siteField;
-
-        public ViewHolder (
-                TextView codeField,
-                TextView nameField,
-                TextView phoneField,
-                TextView siteField
-        ) {
-            this.codeField = codeField;
-            this.nameField = nameField;
-            this.phoneField = phoneField;
-            this.siteField = siteField;
-        }
     }
 }
