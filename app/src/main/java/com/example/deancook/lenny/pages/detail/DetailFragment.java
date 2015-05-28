@@ -1,4 +1,4 @@
-package com.example.deancook.lenny.pages;
+package com.example.deancook.lenny.pages.detail;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.deancook.lenny.R;
+import com.example.deancook.lenny.pages.master.MasterFragment;
 import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 

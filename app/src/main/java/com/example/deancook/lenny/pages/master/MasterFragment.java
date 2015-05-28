@@ -1,4 +1,4 @@
-package com.example.deancook.lenny.pages;
+package com.example.deancook.lenny.pages.master;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.deancook.lenny.adapters.AirlineRecyclerAdapter;
 import com.example.deancook.lenny.R;
 import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;

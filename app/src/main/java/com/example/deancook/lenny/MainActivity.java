@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.example.deancook.lenny.pages.DetailFragment;
-import com.example.deancook.lenny.pages.MasterFragment;
+import com.example.deancook.lenny.pages.detail.DetailFragment;
+import com.example.deancook.lenny.pages.master.MasterFragment;
 import com.example.deancook.lenny.stores.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
 
