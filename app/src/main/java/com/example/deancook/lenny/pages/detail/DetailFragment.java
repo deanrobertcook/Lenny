@@ -1,6 +1,7 @@
 package com.example.deancook.lenny.pages.detail;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,9 +22,8 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
 
     public static final String TAG = DetailFragment.class.getName();
     private static final String ARG_AIRLINE_TAG = "ARG_AIRLINE_TAG";
-    private static Airline airline;
 
-    private MasterFragment.Container container;
+    private Container container;
 
     public static DetailFragment newInstance(String airlineId) {
         DetailFragment fragment = new DetailFragment();
@@ -39,7 +39,7 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.container = (MasterFragment.Container) activity;
+        this.container = (Container) activity;
     }
 
     @Nullable
@@ -53,29 +53,11 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
     public void onStart() {
         super.onStart();
         container.getAirlineStore().registerItemObserver(this);
-        //TODO We had this, but where does the airline actually get saved?
-        //container.getAirlineStore().fetchAirline(this.getArguments().getString(this.ARG_AIRLINE_TAG));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        //TODO if the airline isn't ready, how do we get it? Where do we check again
-        if (airline != null) {
-            View view = getView();
-            ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(this.airline.name);
-            ((TextView) view.findViewById(R.id.tv__fragment__name)).setTypeface(container.getFont());
-
-            ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(this.airline.code);
-            ((TextView) view.findViewById(R.id.tv__fragment__code)).setTypeface(container.getFont());
-
-            ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(this.airline.phone);
-            ((TextView) view.findViewById(R.id.tv__fragment__phone)).setTypeface(container.getFont());
-
-            ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(this.airline.site);
-            ((TextView) view.findViewById(R.id.tv__fragment__site)).setTypeface(container.getFont());
-        }
     }
 
     @Override
@@ -91,12 +73,30 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
 
     @Override
     public void onDestroy() {
-        this.airline = null;
         super.onDestroy();
     }
 
     @Override
     public void onAirlineHasChanged(Airline airline) {
-        this.airline = airline;
+        //Any data that the fragment needs is manipulated directly in any callbacks it specifies!
+
+        View view = getView();
+        ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(airline.name);
+        ((TextView) view.findViewById(R.id.tv__fragment__name)).setTypeface(container.getFont());
+
+        ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(airline.code);
+        ((TextView) view.findViewById(R.id.tv__fragment__code)).setTypeface(container.getFont());
+
+        ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(airline.phone);
+        ((TextView) view.findViewById(R.id.tv__fragment__phone)).setTypeface(container.getFont());
+
+        ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(airline.site);
+        ((TextView) view.findViewById(R.id.tv__fragment__site)).setTypeface(container.getFont());
+    }
+
+    public interface Container {
+        public AirlineStore getAirlineStore();
+
+        public Typeface getFont();
     }
 }

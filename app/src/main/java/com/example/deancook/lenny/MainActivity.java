@@ -12,7 +12,8 @@ import com.example.deancook.lenny.stores.AirlineStore;
 
 
 public class MainActivity extends FragmentActivity implements
-        MasterFragment.Container {
+        MasterFragment.Container,
+        DetailFragment.Container {
 
     public static final String TAG = MainActivity.class.getName();
 
