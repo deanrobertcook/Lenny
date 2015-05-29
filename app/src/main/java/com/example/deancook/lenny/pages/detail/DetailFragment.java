@@ -82,21 +82,15 @@ public class DetailFragment extends Fragment implements AirlineStore.ItemObserve
 
         View view = getView();
         ((TextView) view.findViewById(R.id.tv__fragment__name)).setText(airline.name);
-        ((TextView) view.findViewById(R.id.tv__fragment__name)).setTypeface(container.getFont());
 
         ((TextView) view.findViewById(R.id.tv__fragment__code)).setText(airline.code);
-        ((TextView) view.findViewById(R.id.tv__fragment__code)).setTypeface(container.getFont());
 
         ((TextView) view.findViewById(R.id.tv__fragment__phone)).setText(airline.phone);
-        ((TextView) view.findViewById(R.id.tv__fragment__phone)).setTypeface(container.getFont());
 
         ((TextView) view.findViewById(R.id.tv__fragment__site)).setText(airline.site);
-        ((TextView) view.findViewById(R.id.tv__fragment__site)).setTypeface(container.getFont());
     }
 
     public interface Container {
         public AirlineStore getAirlineStore();
-
-        public Typeface getFont();
     }
 }

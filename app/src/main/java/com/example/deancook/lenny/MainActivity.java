@@ -60,9 +60,4 @@ public class MainActivity extends FragmentActivity implements
                 .commit();
 
     }
-
-    @Override
-    public Typeface getFont() {
-        return Typeface.createFromAsset(getAssets(), "Chantelli_Antiqua.ttf");
-    }
 }

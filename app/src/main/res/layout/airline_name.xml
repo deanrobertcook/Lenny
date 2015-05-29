@@ -9,7 +9,7 @@
 
     <!-- Name Label -->
 
-    <TextView
+    <com.example.deancook.lenny.views.CustomTextView
         android:id="@+id/tv__fragment__name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

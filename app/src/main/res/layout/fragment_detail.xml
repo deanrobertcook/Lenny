@@ -7,7 +7,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp" >
 
-    <TextView
+    <com.example.deancook.lenny.views.CustomTextView
         android:id="@+id/tv__fragment__code"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textStyle="bold" />
 
 
-    <TextView
+    <com.example.deancook.lenny.views.CustomTextView
         android:id="@+id/tv__fragment__name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:textStyle="bold" />
 
 
-    <TextView
+    <com.example.deancook.lenny.views.CustomTextView
         android:id="@+id/tv__fragment__phone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.example.deancook.lenny.views.CustomTextView
         android:id="@+id/tv__fragment__site"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

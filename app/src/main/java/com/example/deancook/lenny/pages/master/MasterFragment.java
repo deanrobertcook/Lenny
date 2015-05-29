@@ -52,7 +52,6 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
         //the adapter we will need to refer to throughout the lifecycle!
         adapter = new AirlineRecyclerAdapter();
         adapter.setCallback(this);
-        adapter.setFont(container.getFont());
 
         recyclerView.setAdapter(adapter);
 
@@ -124,7 +123,5 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
         AirlineStore getAirlineStore();
 
         void onAirlineSelection(Airline airline);
-
-        Typeface getFont();
     }
 }
