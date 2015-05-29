@@ -1,4 +1,4 @@
-package com.example.deancook.lenny.backend;
+package com.example.deancook.lenny.api;
 
 import com.example.deancook.lenny.models.Airline;
 

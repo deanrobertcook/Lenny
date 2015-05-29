@@ -2,7 +2,7 @@ package com.example.deancook.lenny.stores;
 
 import android.os.AsyncTask;
 
-import com.example.deancook.lenny.backend.KayakService;
+import com.example.deancook.lenny.api.KayakService;
 import com.example.deancook.lenny.models.Airline;
 
 import java.util.ArrayList;
