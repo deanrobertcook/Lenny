@@ -1,5 +1,6 @@
 package com.example.deancook.lenny;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -57,5 +58,10 @@ public class MainActivity extends FragmentActivity implements
                 .addToBackStack(MasterFragment.TAG)
                 .commit();
 
+    }
+
+    @Override
+    public Typeface getFont() {
+        return Typeface.createFromAsset(getAssets(), "Chantelli_Antiqua.ttf");
     }
 }

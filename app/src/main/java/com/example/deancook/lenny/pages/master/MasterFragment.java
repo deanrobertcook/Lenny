@@ -1,6 +1,7 @@
 package com.example.deancook.lenny.pages.master;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -51,7 +52,10 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
         //the adapter we will need to refer to throughout the lifecycle!
         adapter = new AirlineRecyclerAdapter();
         adapter.setCallback(this);
+        adapter.setFont(container.getFont());
+
         recyclerView.setAdapter(adapter);
+
 
         return rootView;
     }
@@ -120,5 +124,7 @@ public class MasterFragment extends Fragment implements AirlineRecyclerAdapter.C
         AirlineStore getAirlineStore();
 
         void onAirlineSelection(Airline airline);
+
+        Typeface getFont();
     }
 }

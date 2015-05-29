@@ -1,5 +1,6 @@
 package com.example.deancook.lenny.pages.master;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineViewHold
 
     private List<Airline> airlines = new ArrayList<>();
     private Callback callback;
+    private Typeface font;
 
     public void setCallback(Callback callback) {
         this.callback = callback;
@@ -46,6 +48,7 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineViewHold
     @Override
     public void onBindViewHolder(AirlineViewHolder holder, int position) {
         holder.airlineName.setText(airlines.get(position).name);
+        holder.airlineName.setTypeface(font);
         holder.setId(position);
         /*
          * So why do we create an anonymous callback class here instead of implementing the the
@@ -62,6 +65,10 @@ public class AirlineRecyclerAdapter extends RecyclerView.Adapter<AirlineViewHold
     @Override
     public int getItemCount() {
         return airlines.size();
+    }
+
+    public void setFont(Typeface font) {
+        this.font = font;
     }
 
     /*
