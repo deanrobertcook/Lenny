@@ -1,6 +1,5 @@
 package com.example.deancook.lenny.pages.master;
 
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import com.example.deancook.lenny.R;
 import com.example.deancook.lenny.models.Airline;
 import com.example.deancook.lenny.stores.AirlineStore;
-
 
 import java.util.ArrayList;
 import java.util.List;
