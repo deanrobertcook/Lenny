@@ -4,20 +4,17 @@ package com.example.deancook.lenny.models;
  * Created by deancook on 20/05/15.
  */
 public class Airline {
-    public int id;
     public final String code;
     public final String logoURL;
     public final String name;
     public final String phone;
     public final String site;
 
-    public Airline (int id,
-                    String code,
+    public Airline (String code,
                     String logoURL,
                     String name,
                     String phone,
                     String site) {
-        this.id = id;
         this.code = code;
         this.logoURL = logoURL;
         this.name = name;

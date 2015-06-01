@@ -1,10 +1,19 @@
 package com.example.deancook.lenny.stores;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
 import com.example.deancook.lenny.api.KayakService;
+import com.example.deancook.lenny.database.Contract;
+import com.example.deancook.lenny.database.DatabaseHelper;
 import com.example.deancook.lenny.models.Airline;
 
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +30,13 @@ public class AirlineStore {
     private Airline selectedAirline;
     private Set<ListObserver> listObservers = new HashSet<>();
     private Set<ItemObserver> itemObservers = new HashSet<>();
+    private DatabaseHelper dbHelper;
 
     private static String endpointURL = "https://www.kayak.com/h/mobileapis/directory";
+
+    public AirlineStore(Context context) {
+        this.dbHelper = new DatabaseHelper(context);
+    }
 
     public void registerListObserver(ListObserver listObserver) {
         this.listObservers.add(listObserver);
@@ -71,16 +85,62 @@ public class AirlineStore {
         this.selectedAirline = null;
         this.listObservers = null;
         this.itemObservers = null;
+        this.dbHelper = null;
     }
 
     class RequestTask extends AsyncTask<String, Void, List<Airline>> {
         @Override
         protected List<Airline> doInBackground(String... uri) {
-            return getAirlinesRetroFit(uri[0]);
+            List<Airline> airlines;
+
+//            airlines = getAirlinesFromRetroFit(uri[0]);
+            if (getDatabaseRowCount() > 0) {
+                airlines = getAirlinesFromDatabase();
+            } else {
+                airlines = getAirlinesFromRetroFit(uri[0]);
+                putAirlinesIntoDatabase(airlines);
+            }
+            return airlines;
+        }
+
+        private int getDatabaseRowCount() {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            int count = (int)DatabaseUtils.queryNumEntries(db, Contract.Airline.TABLE_NAME);
+            return count;
+        }
+
+        private List<Airline> getAirlinesFromDatabase() {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ArrayList<Airline> airlines = new ArrayList<>();
+            Cursor cursor = db.query(
+                    Contract.Airline.TABLE_NAME,
+                    new String[] {
+                            Contract.Airline.COLUMN_NAME_CODE,
+                            Contract.Airline.COLUMN_NAME_LOGOURL,
+                            Contract.Airline.COLUMN_NAME_NAME,
+                            Contract.Airline.COLUMN_NAME_PHONE,
+                            Contract.Airline.COLUMN_NAME_SITE
+                    },
+                    null, null, null, null, null
+            );
+            int rows = cursor.getCount();
+            cursor.moveToFirst();
+            for (int i = 0; i < rows; i++) {
+                Airline airline = new Airline(
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)
+                );
+                airlines.add(airline);
+                cursor.moveToNext();
+            }
+            return airlines;
         }
 
         //TODO this is black magic!!
-        private List<Airline> getAirlinesRetroFit(String url) {
+        private List<Airline> getAirlinesFromRetroFit(String url) {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint(url)
                     .build();
@@ -90,6 +150,24 @@ public class AirlineStore {
             List<Airline> airlines = service.listAirlines();
             return airlines;
 
+        }
+        
+        private void putAirlinesIntoDatabase(List<Airline> airlines) {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            for (Airline airline: airlines) {
+                createRow(airline, db);
+            }
+        }
+
+        private void createRow(Airline airline, SQLiteDatabase db) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.Airline.COLUMN_NAME_CODE, airline.code);
+            values.put(Contract.Airline.COLUMN_NAME_NAME, airline.name);
+            values.put(Contract.Airline.COLUMN_NAME_LOGOURL, airline.logoURL);
+            values.put(Contract.Airline.COLUMN_NAME_SITE, airline.site);
+            values.put(Contract.Airline.COLUMN_NAME_PHONE, airline.phone);
+
+            db.insert(Contract.Airline.TABLE_NAME, null, values);
         }
 
         @Override
