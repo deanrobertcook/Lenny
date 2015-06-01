@@ -18,7 +18,8 @@ public class TypefaceController {
     we might want to use in our application. This will help us only define them once.
      */
     public enum CustomTypeface {
-        CHANTELLI_REGULAR("Chantelli_Antiqua.ttf");
+        CHANTELLI_REGULAR("Chantelli_Antiqua.ttf"),
+        NINETEEN_FORTY_TWO("1942.ttf");
 
         public final String path;
 

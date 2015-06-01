@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomTextView">
+        <attr name="font" format="enum">
+            <enum name="chantelli" value="0"/>
+            <enum name="nineteen_forty_two" value="1"/>
+        </attr>
+        <attr name="weight" format="enum">
+            <enum name="light" value="0"/>
+            <enum name="regular" value="1"/>
+            <enum name="heavy" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

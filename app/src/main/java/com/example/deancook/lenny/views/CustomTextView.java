@@ -1,12 +1,13 @@
 package com.example.deancook.lenny.views;
 
 import android.content.Context;
-import android.graphics.Canvas;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.example.deancook.lenny.MyApplication;
+import com.example.deancook.lenny.R;
 import com.example.deancook.lenny.TypefaceController;
 
 /**
@@ -14,25 +15,33 @@ import com.example.deancook.lenny.TypefaceController;
  */
 public class CustomTextView extends TextView {
 
-    public CustomTextView(Context context) {
-        super(context);
-        init(context);
-    }
+    private int weightIndex;
+    private int fontIndex;
 
     public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
-    }
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.CustomTextView,
+                0, 0
+        );
 
-    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        try {
+            fontIndex = typedArray.getInt(R.styleable.CustomTextView_font, 0);
+            weightIndex = typedArray.getInt(R.styleable.CustomTextView_weight, 0);
+        } finally {
+            typedArray.recycle();
+        }
         init(context);
     }
 
     private void init(Context context) {
+        TypefaceController.CustomTypeface customTypeface =
+                TypefaceController.CustomTypeface.values()[fontIndex];
+
         Typeface typeface = ((MyApplication)context.getApplicationContext())
                 .getTypeFaceController()
-                .getTypeFace(TypefaceController.CustomTypeface.CHANTELLI_REGULAR);
+                .getTypeFace(customTypeface);
         this.setTypeface(typeface);
     }
 }

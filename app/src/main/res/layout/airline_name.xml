@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -16,6 +17,8 @@
         android:paddingBottom="2dip"
         android:paddingTop="6dip"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        custom:font="nineteen_forty_two"
+        custom:weight="regular"/>
 
 </LinearLayout>
