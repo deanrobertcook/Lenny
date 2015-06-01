@@ -31,6 +31,7 @@ public class CustomTextView extends TextView {
 
     private void init(Context context) {
         Typeface typeface = ((MyApplication)context.getApplicationContext())
+                .getTypeFaceController()
                 .getTypeFace(TypefaceController.CustomTypeface.CHANTELLI_REGULAR);
         this.setTypeface(typeface);
     }

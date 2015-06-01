@@ -10,8 +10,8 @@ public class MyApplication extends Application{
 
     private TypefaceController typefaceController;
 
-    public Typeface getTypeFace(TypefaceController.CustomTypeface typeface) {
-        return typefaceController.getTypeFace(typeface);
+    public TypefaceController getTypeFaceController() {
+        return typefaceController;
     }
 
     @Override
